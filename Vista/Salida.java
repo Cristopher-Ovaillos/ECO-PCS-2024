@@ -4,11 +4,11 @@ import java.util.concurrent.Semaphore;
 
 public class Salida {
     
-    private final String esc = "\033[H\033[2J"; // Limpia la pantalla
-    private final String PERSONAS = "\033[0;1H"; 
-    private final String COLECTIVOS = "\033[2;1H"; 
+    private final String esc = "\033[H\033[2J"; // Limpia la pantalla 
+  
 
-    private final String HORA = "\033[3;1H"; 
+    private final String HORA = "\033[0;1H"; 
+    private final String COLECTIVOS = "\033[3;1H"; 
     private final String SHOP = "\033[4;1H"; 
     private final String SNORKEL = "\033[5;1H"; 
     private final String RESTAURANTE = "\033[6;1H"; 
@@ -27,16 +27,7 @@ public class Salida {
         System.out.print(esc); // Limpia la pantalla en la creación del objeto
     }
 
-    public void soutPersonas(String str)  {
-        try {
-            semaforoPersonas.acquire();
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        System.out.print(PERSONAS + "\033[K" + str); // Limpia la línea antes de imprimir
-        semaforoPersonas.release();
-    }
+ 
     public void soutColectivo(String str)  {
         try {
             semaforoPersonas.acquire();
@@ -44,7 +35,7 @@ public class Salida {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.print(COLECTIVOS + "\033[KCOLECTIVO" + str); // Limpia la línea antes de imprimir
+        System.out.print(COLECTIVOS + "\033[KCOLECTIVO    " + str); // Limpia la línea antes de imprimir
         semaforoPersonas.release();
     }
 

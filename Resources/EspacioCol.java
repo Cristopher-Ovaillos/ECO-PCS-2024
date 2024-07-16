@@ -20,7 +20,7 @@ public class EspacioCol {
         if (!lleno) {
             numPasajeros++;
             sout.soutColectivo(
-                    "Pasajero " + idPasajero + " ha subido al colectivo " + idPasajero + ". Total: " + numPasajeros);
+                    "Pasajero " + idPasajero + " ha subido al colectivo " + nombre + ". Total: " + numPasajeros);
             if (numPasajeros == MAX_CAPACIDAD) {
                 lleno = true;
                 sout.soutColectivo("Colectivo lleno " + idPasajero + ". Esperando para partir.");
@@ -42,7 +42,7 @@ public class EspacioCol {
                 sout.soutColectivo("Colectivo " + nombre + " lleno. Manejando hasta el lugar determinado.");
             }
             Thread.sleep(RECORRIDO);
-            sout.soutColectivo("Colectivo " +nombre  + "llego al estacionamiento");
+            sout.soutColectivo("Colectivo " +nombre  + " llego al estacionamiento");
             while (pasajerosBajados < numPasajeros) {
                 wait(); // Espera a que todos los pasajeros bajen
             }
@@ -56,7 +56,7 @@ public class EspacioCol {
 
     public synchronized void bajarPasajero() {
         pasajerosBajados++;
-        sout.soutColectivo("Pasajero ha bajado del colectivo. Total: " + pasajerosBajados);
+        sout.soutColectivo("Pasajero ha bajado del colectivo "+nombre+" Total: " + pasajerosBajados);
 
         if (pasajerosBajados == numPasajeros) {
 

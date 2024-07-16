@@ -1,6 +1,7 @@
 package Resources;
 
 import java.util.Random;
+import java.util.concurrent.Semaphore;
 
 import Vista.Salida;
 
@@ -13,6 +14,8 @@ public class ECOPCS {
     private Hora hora;
     private Salida SOUT;
     private EspacioCol colA, colB, colC;
+    private int ASIGNAR_COL = 0, TOTAL_COLECTIVOS = 2;
+    private Semaphore aplicar, subir;
 
     public ECOPCS() {
         this.SOUT = new Salida();
@@ -25,10 +28,10 @@ public class ECOPCS {
         this.colA = new EspacioCol(SOUT, "Verde");
         this.colB = new EspacioCol(SOUT, "Rojo");
         this.colC = new EspacioCol(SOUT, "VICTORIA");
+        aplicar = new Semaphore(1);
+        subir = new Semaphore(1);
     }
-    //
 
-    //
     public void Parque(int id) {
         try {
             Random random = new Random();
@@ -36,12 +39,11 @@ public class ECOPCS {
             int randomFood = random.nextInt(2);
             boolean snk = true, lch = true;
             boolean continuar = true;
-
+            hora.isActivo();// espero a que se pueda entrar, si esta cerrado espero
             while (continuar) {
-                if (!hora.isActivo()) {
-                    continuar = false;
-                    continue;
-                }
+                if (hora.atencionActiva()) {
+                    
+                
 
                 int randomActividad = random.nextInt(6);
                 switch (randomActividad) {
@@ -88,11 +90,19 @@ public class ECOPCS {
                         continuar = false;
                         break;
                 }
+            }else{
+                continuar = false;//cerro
+            }
+
             }
 
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void pasarMolinetes() {
+
     }
 
     public boolean estaActivo() {
@@ -102,6 +112,37 @@ public class ECOPCS {
     public void accederHora() {
         // solo el Hilo reloj accede a este.
         this.hora.avanzarHora();
+    }
+
+    public int asignarColectivo() {
+        int num = 0;
+        try {
+            aplicar.acquire();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (ASIGNAR_COL != TOTAL_COLECTIVOS) {
+
+            switch (ASIGNAR_COL) {
+                case 0:
+                    num = 0;
+                    break;
+                case 1:
+                    num = 1;
+                    break;
+                case 2:
+                    num = 2;
+                    break;
+
+                default:
+                    ASIGNAR_COL = 0;
+                    break;
+            }
+            ASIGNAR_COL++;
+        }
+
+        aplicar.release();
+        return num;
     }
 
     public void accederColA(int id) {
@@ -127,6 +168,32 @@ public class ECOPCS {
             colC.manejarColectivo(id);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void accionCole(int id) {
+        Random x = new Random();
+        int i = x.nextInt(3);
+        try {
+
+            switch (i) {
+                case 0:
+                    colA.subirPasajero(id);
+                    colA.bajarPasajero();
+                    break;
+                case 1:
+                    colB.subirPasajero(id);
+                    colB.bajarPasajero();
+                  
+                    break;
+
+                default:
+                    colC.subirPasajero(id);
+                    colC.bajarPasajero();
+                    break;
+            }
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

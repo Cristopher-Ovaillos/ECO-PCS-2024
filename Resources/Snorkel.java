@@ -30,37 +30,35 @@ public class Snorkel {
 
     public void realizarSnorkel(int id) throws InterruptedException {
         lock.lock();
-        try {
-            // Esperar a que haya un asistente disponible
-            while (asistentesDisponibles <= 0) {
-                sout.soutSnorkel("  La persona " + id + " espera ser atendido");
-                asistenteDisponible.await();
-            }
-            asistentesDisponibles--;
 
-            sout.soutSnorkel(id + " está siendo atendido por un asistente.");
-
-            // Esperar a que haya un equipo de snorkel disponible
-            while (equiposDisponibles <= 0) {
-                equipoDisponible.await();
-            }
-            equiposDisponibles--;
-            sout.soutSnorkel(id + " ha adquirido el equipo de snorkel.");
-
-            // Simular el tiempo de disfrute de la actividad
-            Thread.sleep((long) (Math.random() * 10000));
-
-            // Devolver el equipo de snorkel
-            equiposDisponibles++;
-            sout.soutSnorkel(id + " ha devuelto el equipo de snorkel.");
-            equipoDisponible.signal(); // Despertar a otro hilo esperando por un equipo
-
-            // Liberar al asistente
-            asistentesDisponibles++;
-            asistenteDisponible.signal(); // Despertar a otro hilo esperando por un asistente
-
-        } finally {
-            lock.unlock();
+        // Esperar a que haya un asistente disponible
+        while (asistentesDisponibles <= 0) {
+            sout.soutSnorkel("  La persona " + id + " espera ser atendido");
+            asistenteDisponible.await();
         }
+        asistentesDisponibles--;
+
+        sout.soutSnorkel(id + " está siendo atendido por un asistente.");
+
+        // Esperar a que haya un equipo de snorkel disponible
+        while (equiposDisponibles <= 0) {
+            equipoDisponible.await();
+        }
+        equiposDisponibles--;
+        sout.soutSnorkel(id + " ha adquirido el equipo de snorkel.");
+
+        // Simular el tiempo de disfrute de la actividad
+        Thread.sleep(1500);
+
+        // Devolver el equipo de snorkel
+        equiposDisponibles++;
+        //sout.soutSnorkel(id + " ha devuelto el equipo de snorkel.");
+        equipoDisponible.signal(); // Despertar a otro hilo esperando por un equipo
+
+        // Liberar al asistente
+        asistentesDisponibles++;
+        asistenteDisponible.signal(); // Despertar a otro hilo esperando por un asistente
+        lock.unlock();
+
     }
 }

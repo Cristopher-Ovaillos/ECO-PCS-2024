@@ -17,6 +17,11 @@ public class Visitante implements Runnable {
 
     @Override
     public void run() {
+            if (!tipoAcceso.equals("Particular")) {
+                parque.accionCole(id);
+             
+            }
+            
             parque.Parque(id);
     }
 
