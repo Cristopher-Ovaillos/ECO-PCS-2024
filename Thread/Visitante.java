@@ -22,7 +22,7 @@ public class Visitante implements Runnable {
              
             }
             
-            parque.Parque(id);
+            parque.Parque(this);
     }
 
     public void temp() {
@@ -32,5 +32,9 @@ public class Visitante implements Runnable {
             Thread.currentThread().interrupt();
             return;
         }
+    }
+
+    public int getNombre(){
+        return id;
     }
 }

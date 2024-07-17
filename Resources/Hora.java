@@ -7,7 +7,7 @@ public class Hora {
     private int minuto;
     private int dia;
     private boolean activo;
-    private int CIERRE = 11;
+    private int CIERRE = 10;
     private int APERTURA = 9;
     private int HORA_INICIO = 8;
     private Salida sout;
@@ -51,7 +51,7 @@ public class Hora {
 
     public void cerrarParque() {
         activo = false;
-
+        notifyAll();
     }
 
     public void abrirParque() {

@@ -8,6 +8,7 @@ public class Salida {
   
 
     private final String HORA = "\033[0;1H"; 
+    private final String PERSONAS = "\033[2;1H"; 
     private final String COLECTIVOS = "\033[3;1H"; 
     private final String SHOP = "\033[4;1H"; 
     private final String SNORKEL = "\033[5;1H"; 
@@ -16,6 +17,7 @@ public class Salida {
     private final String CARRERA = "\033[8;1H"; 
 
     private Semaphore semaforoPersonas = new Semaphore(1);
+    private Semaphore semaforoColectivos = new Semaphore(1);
     private Semaphore semaforoHora = new Semaphore(1);
     private Semaphore semaforoShop = new Semaphore(1);
     private Semaphore semaforoSnorkel = new Semaphore(1);
@@ -27,16 +29,25 @@ public class Salida {
         System.out.print(esc); // Limpia la pantalla en la creación del objeto
     }
 
- 
-    public void soutColectivo(String str)  {
+    public void soutPersonas(int str)  {
         try {
             semaforoPersonas.acquire();
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.print(COLECTIVOS + "\033[KCOLECTIVO    " + str); // Limpia la línea antes de imprimir
+        System.out.print(PERSONAS + "\033[KPERSONAS    " + str); // Limpia la línea antes de imprimir
         semaforoPersonas.release();
+    }
+    public void soutColectivo(String str)  {
+        try {
+            semaforoColectivos.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.print(COLECTIVOS + "\033[KCOLECTIVO    " + str); // Limpia la línea antes de imprimir
+        semaforoColectivos.release();
     }
 
     public void soutHora(String str)  {
