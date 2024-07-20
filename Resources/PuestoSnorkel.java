@@ -32,6 +32,7 @@ public class PuestoSnorkel {
                     e.printStackTrace();
                 }
             }
+            
             visitantesEnEspera.remove(visitante);  
             try {
                 equiposDisponibles.acquire();

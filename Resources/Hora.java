@@ -7,7 +7,7 @@ public class Hora {
     private int minuto;
     private int dia;
     private boolean activo;
-    private int CIERRE = 10;
+    private int CIERRE = 17;
     private int APERTURA = 9;
     private int HORA_INICIO = 8;
     private Salida sout;

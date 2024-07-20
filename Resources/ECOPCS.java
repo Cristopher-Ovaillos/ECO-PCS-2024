@@ -48,7 +48,7 @@ public class ECOPCS {
 
     public void salirParque(int id) {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(500);
             entrar.acquire();
 
           
@@ -65,6 +65,7 @@ public class ECOPCS {
         Random random = new Random();
         int randomRest = random.nextInt(3);
         int randomFood = random.nextInt(2);
+        //me sirve para saber que tiene solo un snack gratis asi como lunch
         boolean snk = true, lch = true;
         boolean continuar = true;
         hora.isActivo();// espero a que se pueda entrar, si esta cerrado espero
