@@ -56,7 +56,7 @@ public class PuestoSnorkel {
                 sout.soutSnorkel("Notificando a " + siguienteVisitante.getNombre() + " que hay un equipo disponible.");
                 visitantesEnEspera.notify();
             }
-        }
+        } 
     }
 
 }
