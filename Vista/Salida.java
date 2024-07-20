@@ -14,7 +14,12 @@ public class Salida {
     private final String SNORKEL = "\033[5;1H"; 
     private final String RESTAURANTE = "\033[6;1H"; 
     private final String FARO = "\033[7;1H"; 
-    private final String CARRERA = "\033[8;1H"; 
+    private final String CARRERA_SUBIDA = "\033[8;1H"; 
+    private final String CARRERA_BOLSO = "\033[9;1H"; 
+    private final String CARRERA_START = "\033[11;1H"; 
+    private final String CARRERA_TREN = "\033[10;1H"; 
+  
+   
 
     private Semaphore semaforoPersonas = new Semaphore(1);
     private Semaphore semaforoColectivos = new Semaphore(1);
@@ -24,12 +29,14 @@ public class Salida {
     private Semaphore semaforoRestaurante = new Semaphore(1);
     private Semaphore semaforoFaro = new Semaphore(1);
     private Semaphore semaforoCarrera = new Semaphore(1);
-
+    private Semaphore semaforoENTRADA = new Semaphore(1);
+    private Semaphore semaforoBolso = new Semaphore(1);
+    private Semaphore semaforoTren = new Semaphore(1);
     public Salida() {
         System.out.print(esc); // Limpia la pantalla en la creación del objeto
     }
 
-    public void soutPersonas(int str)  {
+    public void soutPersonas(String str)  {
         try {
             semaforoPersonas.acquire();
         } catch (InterruptedException e) {
@@ -112,7 +119,37 @@ public class Salida {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.print(CARRERA + "\033[KGOMONES  " + str); // Limpia la línea antes de imprimir
+        System.out.print(CARRERA_SUBIDA + "\033[KCARRERA CAMINO  " + str); // Limpia la línea antes de imprimir
         semaforoCarrera.release();
+    }
+    public void soutCarreraStart(String str) {
+        try {
+            semaforoENTRADA.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.print(CARRERA_START+ "\033[KCARRERA START  " + str); // Limpia la línea antes de imprimir
+        semaforoENTRADA.release();
+    }
+    public void soutCarreraBolso(String str) {
+        try {
+            semaforoBolso.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.print(CARRERA_BOLSO+ "\033[KCARRERA BOLSO  " + str); // Limpia la línea antes de imprimir
+        semaforoBolso.release();
+    }
+    public void soutCarreraTren(String str) {
+        try {
+            semaforoTren.acquire();
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.print(CARRERA_TREN+ "\033[KCARRERA TREN  " + str); // Limpia la línea antes de imprimir
+        semaforoTren.release();
     }
 }

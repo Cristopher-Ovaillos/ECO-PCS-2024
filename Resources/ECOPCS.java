@@ -11,11 +11,11 @@ public class ECOPCS {
     private SouvenirShop shop;
     private SeccionComida restaurantes;
     private FaroMirador faro;
-    private CarreraGomones carrera;
+    public CarreraGomones carrera;
     private Hora hora;
     private Salida SOUT;
     private EspacioCol colA, colB, colC;
-    private int ASIGNAR_COL = 0, TOTAL_COLECTIVOS = 2, VISITANTES_ACTUALES = 0;
+    private int ASIGNAR_COL = 0, TOTAL_COLECTIVOS = 2;
     private Semaphore aplicar, entrar;
 
     public ECOPCS() {
@@ -26,18 +26,18 @@ public class ECOPCS {
         this.shop = new SouvenirShop(SOUT);
         this.carrera = new CarreraGomones(SOUT);
         this.hora = new Hora(SOUT);
-        this.colA = new EspacioCol(SOUT, "Verde");
-        this.colB = new EspacioCol(SOUT, "Rojo");
+        this.colA = new EspacioCol(SOUT, "CONCURRENTE");
+        this.colB = new EspacioCol(SOUT, "SILVIA");
         this.colC = new EspacioCol(SOUT, "VICTORIA");
         aplicar = new Semaphore(1);
         entrar = new Semaphore(1);
     }
 
-    public void entrarParque() {
+    public void entrarParque(int id) {
         try {
             entrar.acquire();
-            VISITANTES_ACTUALES++;
-            SOUT.soutPersonas(VISITANTES_ACTUALES);
+         
+            SOUT.soutPersonas(id+ " ENTRO");
 
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -46,13 +46,13 @@ public class ECOPCS {
         entrar.release();
     }
 
-    public void salirParque() {
+    public void salirParque(int id) {
         try {
             Thread.sleep(1000);
             entrar.acquire();
 
-            VISITANTES_ACTUALES--;
-            SOUT.soutPersonas(VISITANTES_ACTUALES);
+          
+            SOUT.soutPersonas(id+" SALIO");
 
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
@@ -68,13 +68,14 @@ public class ECOPCS {
         boolean snk = true, lch = true;
         boolean continuar = true;
         hora.isActivo();// espero a que se pueda entrar, si esta cerrado espero
-        entrarParque();
+        entrarParque(vis.getNombre());
 
         //
         while (continuar) {
             if (hora.atencionActiva()) {
 
                 int randomActividad = random.nextInt(6);
+                //int randomActividad = 4;
                 switch (randomActividad) {
                     case 0:
 
@@ -112,14 +113,7 @@ public class ECOPCS {
                     case 4:
 
                         
-                         /*
-                          *  try {
-                          carrera.realizarActividadGomones(vis.getNombre());
-                          } catch (InterruptedException e) {
-                          
-                          e.printStackTrace();
-                         }
-                          */
+                         carrera.actividadCarrera(vis.getNombre());
                          
 
                         break;
@@ -134,7 +128,7 @@ public class ECOPCS {
         }
         //
 
-        salirParque();
+        salirParque(vis.getNombre());
     }
 
     public boolean estaActivo() {

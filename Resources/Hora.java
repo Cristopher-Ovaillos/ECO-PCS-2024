@@ -12,12 +12,14 @@ public class Hora {
     private int HORA_INICIO = 8;
     private Salida sout;
 
+
     public Hora(Salida sout) {
         this.hora = HORA_INICIO; // Comienza a las 09:00
-        this.minuto = 30;
+        this.minuto = 50;
         this.dia = 1; // Comienza en el día 1
         this.activo = false; // El parque comienza activo
         this.sout = sout;
+    
     }
 
     public synchronized void avanzarHora() {
@@ -50,11 +52,13 @@ public class Hora {
     }
 
     public void cerrarParque() {
+        
         activo = false;
         notifyAll();
     }
 
     public void abrirParque() {
+      
         activo = true;
        // notifyAll(); // Asegura que todos los visitantes sean notificados cuando el parque abre
     }

@@ -56,7 +56,7 @@ public class EspacioCol {
 
     public synchronized void bajarPasajero() {
         pasajerosBajados++;
-        sout.soutColectivo("Pasajero ha bajado del colectivo "+nombre+" Total: " + pasajerosBajados);
+        sout.soutColectivo("Pasajero ha bajado del colectivo "+nombre);
 
         if (pasajerosBajados == numPasajeros) {
 
